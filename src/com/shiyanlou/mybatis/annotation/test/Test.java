@@ -1,5 +1,4 @@
-package com.shiyanlou.mybatis.test;
-
+package com.shiyanlou.mybatis.annotation.test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -9,10 +8,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import com.shiyanlou.mybatis.mapper.UserMapper;
-import com.shiyanlou.mybatis.model.User;
+import com.shiyanlou.mybatis.annotation.mapper.UserMapper;
+import com.shiyanlou.mybatis.annotation.model.User;
 
-public class UserTest {
+public class Test {
     private static SqlSessionFactory sqlSessionFactory;
 
     public static void main(String[] args) {
@@ -30,25 +29,24 @@ public class UserTest {
         // 创建会话工厂，传入 MyBatis 的配置文件信息
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 
-//         insertUser();
-//         updateUser();
-         deleteUser();
-//         selectUserById();
-//        selectAllUser();
+        insertUser();
+        // updateUser();
+        // deleteUser();
+        // selectUserById();
+        // selectAllUser();
 
     }
 
-    // 新增用戶
-    private static void insertUser() {
+    // 新增用户
+    private static void insertUser(){
         // 通过工厂得到 SqlSession
         SqlSession session = sqlSessionFactory.openSession();
 
         UserMapper mapper = session.getMapper(UserMapper.class);
         User user = new User();
-        user.setUsername("Tom");
-        user.setPassword("123456");
-        user.setSex("male");
-        user.setAddress("chengdu");
+        user.setName("Anne");
+        user.setSex("female");
+        user.setAge(23);
         try {
             mapper.insertUser(user);
 
@@ -62,9 +60,8 @@ public class UserTest {
         session.close();
     }
 
-    // 更新用戶
-    private static void updateUser() {
-
+    // 将id为1的用户的年龄更新为25
+    private static void updateUser(){
         SqlSession session = sqlSessionFactory.openSession();
 
         UserMapper mapper = session.getMapper(UserMapper.class);
@@ -74,7 +71,7 @@ public class UserTest {
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-        user.setAddress("chongqing");
+        user.setAge(25);
         try {
             mapper.updateUser(user);
             session.commit();
@@ -86,14 +83,13 @@ public class UserTest {
         session.close();
     }
 
-    // 删除用戶
-    private static void deleteUser() {
-
+    // 将id为5的用户删除
+    private static void deleteUser(){
         SqlSession session = sqlSessionFactory.openSession();
 
         UserMapper mapper = session.getMapper(UserMapper.class);
         try {
-            mapper.deleteUser(1);
+            mapper.deleteUser(5);
             session.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -103,18 +99,16 @@ public class UserTest {
         session.close();
     }
 
-    // 根据id查询用户信息
-    private static void selectUserById() {
-
+    // 查询id为1的用户信息
+    private static void selectUserById(){
         SqlSession session = sqlSessionFactory.openSession();
 
         UserMapper mapper = session.getMapper(UserMapper.class);
         try {
             User user = mapper.selectUserById(1);
             session.commit();
-            System.out.println(user.getId() + " " + user.getUsername() + " "
-                    + user.getPassword() + " " + user.getSex() + " "
-                    + user.getAddress());
+            System.out.println(user.getId() + " " + user.getName()  + " " + user.getSex() + " "
+                    + user.getAge());
         } catch (Exception e) {
             e.printStackTrace();
             session.rollback();
@@ -123,9 +117,8 @@ public class UserTest {
         session.close();
     }
 
-    // 查询所有的用户信息
-    private static void selectAllUser() {
-
+    // 查询所有用户信息
+    private static void selectAllUser(){
         SqlSession session = sqlSessionFactory.openSession();
 
         UserMapper mapper = session.getMapper(UserMapper.class);
@@ -133,9 +126,8 @@ public class UserTest {
             List<User> userList = mapper.selectAllUser();
             session.commit();
             for (User user : userList) {
-                System.out.println(user.getId() + " " + user.getUsername() + " "
-                        + user.getPassword() + " " + user.getSex() + " "
-                        + user.getAddress());
+                System.out.println(user.getId() + " " + user.getName()  + " " + user.getSex() + " "
+                        + user.getAge());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -145,3 +137,4 @@ public class UserTest {
         session.close();
     }
 }
+

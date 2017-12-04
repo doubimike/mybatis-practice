@@ -44,5 +44,6 @@ public interface UserMapper {
      * @return
      * @throws Exception
      */
+
     public List<User> selectAllUser() throws Exception;
 }
